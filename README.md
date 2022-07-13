@@ -36,7 +36,14 @@ $ docker compose up -d
 ### Create SQS Queue
 
 ```sh
+# Create normal queue.
 $ aws sqs create-queue --queue-name test-queue --endpoint-url http://localhost:4566 --profile localstack
+# Create dead letter queue.
+$ aws sqs create-queue --queue-name test-dlq --endpoint-url http://localhost:4566 --profile localstack 
+
+# Set dead letter queue arn as env
+$ DLQ_NAME=`aws sqs get-queue-attributes --queue-url http://localhost:4566/000000000000/test-dlq --attribute-names QueueArn --endpoint-url http://localhost:4566 --output json --profile localstack | jq -r '.Attributes.QueueArn'`
+$ echo "DLQ_NAME=$DLQ_NAME" >> publisher/.env
 ```
 
 ### Create DynamoDB Table
@@ -73,4 +80,10 @@ $ python3 main.py
 
 ```sh
 $ aws --endpoint-url http://localhost:4566 --profile localstack dynamodb scan --table-name test-table
+```
+
+### Check DLQ
+
+```sh
+$ aws sqs receive-message --queue-url http://localhost:4566/000000000000/test-dlq --endpoint-url http://localhost:4566 --profile localstack
 ```

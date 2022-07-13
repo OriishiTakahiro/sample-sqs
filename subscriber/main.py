@@ -10,8 +10,6 @@ load_dotenv()
 
 def prime_factorize(n: int):
     result = []
-    if n <= 0:
-        return []
     if n == 1:
         return [1]
     while n % 2 == 0:
@@ -51,11 +49,15 @@ except Exception as err:
 
 while True:
     print('pooling...')
-    msgs = queue.receive_messages(MaxNumberOfMessages=1, VisibilityTimeout=60)
+    msgs = queue.receive_messages(MaxNumberOfMessages=1, VisibilityTimeout=10)
     if msgs:
 
         job_id = msgs[0].message_id
         value = json.loads(msgs[0].body)['value']
+
+        # messages which has under zero values are failed to process.
+        if value <= 0:
+            continue
 
         print(job_id, value)
 
