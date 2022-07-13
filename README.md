@@ -6,7 +6,27 @@ Sample implementation with job queue system.
 
 ## Usage
 
-### Start localstack
+### Prepare
+
+Add following profile to `~/.aws/config`
+
+```sh
+[profile localstack]
+region = us-east-1
+output = text
+```
+
+Setup dummy credentials.
+
+```sh
+$ aws configure
+AWS Access Key ID [None]: dummy
+AWS Secret Access Key [None]: dummy
+Default region name [None]: us-east-1
+Default output format [None]: text
+```
+
+Start localstack
 
 ```sh
 $ cd /path/to/localstack/dir
