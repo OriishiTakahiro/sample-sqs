@@ -29,7 +29,8 @@ Default output format [None]: text
 Start localstack
 
 ```sh
-$ cd /path/to/localstack/dir
+$ git clone https://github.com/localstack/localstack.git
+$ cd localstack
 $ docker compose up -d
 ```
 
